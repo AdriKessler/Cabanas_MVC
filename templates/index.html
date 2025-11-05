@@ -1,0 +1,20 @@
+{include file="header.html"}
+
+<section>
+  <h2>Bienvenida</h2>
+    <p>Este sistema permite gestionar las cabañas, las personas registradas y las reservas realizadas.</p>
+    <p>Usá el menú para acceder a cada módulo.</p>
+    <!-- Menú desplegable -->
+   <div class="menu-dd">
+  <button id="menuToggle" aria-expanded="false" aria-controls="menuList">Menú ▾</button>
+  <nav id="menuList" class="menu-dd__panel" hidden>
+    <a class="menu-dd__item" href="{$base_url}?action=cabanas">Cabañas</a>
+    <a class="menu-dd__item" href="{$base_url}?action=personas">Personas</a>
+    <a class="menu-dd__item" href="{$base_url}?action=reservas">Reservas</a>
+  </nav>
+</div>
+
+
+</section>
+
+{include file="footer.html"}

@@ -1,0 +1,14 @@
+<!-- Agrego el CSS al header -->
+<link rel="stylesheet" href="{$base_url}css/style.css">
+
+<nav>
+  <a href="{$base_url}">Inicio</a>
+  {if isset($user)}
+    | Hola, {$user.nombre}
+    | <a href="{$base_url}?action=usuarios&sub_action=logout">Salir</a>
+  {else}
+    | <a href="{$base_url}?action=usuarios&sub_action=login">Entrar</a>
+    | <a href="{$base_url}?action=usuarios&sub_action=registro">Registro</a>
+  {/if}
+</nav>
+<hr>

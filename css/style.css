@@ -1,0 +1,41 @@
+.menu-dd { 
+    position: relative; 
+    display: inline-block; 
+}
+.menu-dd__toggle {
+  padding: .6rem .9rem; border: 1px solid #ddd; border-radius: .6rem;
+  background: #fff; cursor: pointer; font: inherit;
+}
+.menu-dd__toggle:focus { 
+    outline: 2px solid #6aa0ff; 
+    outline-offset: 2px; 
+}
+
+.menu-dd__panel {
+  position: absolute; 
+  top: calc(100% + 6px); 
+  left: 0; 
+  z-index: 1000;
+  min-width: 220px; 
+  padding: .35rem; 
+  border: 1px solid #e6e6e6;
+  border-radius: .6rem; 
+  background: #fff; 
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  display: flex; 
+  flex-direction: column; 
+  gap: 4px;
+}
+.menu-dd__item {
+  padding: .55rem .7rem; 
+  border-radius: .5rem; 
+  text-decoration: none; 
+  color: #222;
+}
+.menu-dd__item:hover, .menu-dd__item:focus { 
+    background: #f3f3f3; 
+    outline: none; 
+}
+[hidden] { 
+  display: none !important; 
+}   /* por si algún reset lo pisa */
