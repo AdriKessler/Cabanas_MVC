@@ -60,6 +60,10 @@ class ReservasModelo {
     public function findPersonaById(int $id) {
         return $this->db->buscarPersonaPorId($id);
     }
+
+    public function findCabanaById(int $id) {
+        return$this->db->buscarCabañaPorId($id);     // o buscarCabanaPorId()   
+    }
     /**
      * Verifica solapamiento de reservas para una cabaña entre dos fechas.
      * $excluirId permite ignorar una reserva puntual (útil en modificar).

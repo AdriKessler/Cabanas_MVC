@@ -1,4 +1,4 @@
-{include file="header.tpl"}
+{include file="header.html"}
 
 <h2>Editar Reserva</h2>
 
@@ -6,10 +6,11 @@
   <label for="persona_id">Persona:</label><br>
   <select id="persona_id" name="persona_id" required>
     {foreach from=$personas item=p}
-      <option value="{$p.id}" {if $p.id == $reserva.persona_id}selected{/if}>
-        {$p.nombre} (DNI: {$p.dni})
-      </option>
-    {/foreach}
+    <option value="{$p.id}" {if $p.id == $reserva.persona_id}selected{/if}>
+      {$p.nombre}
+      {if isset($p.dni)} (DNI: {$p.dni}){/if}
+    </option>
+{/foreach}
   </select><br><br>
 
   <label for="cabana_id">Cabaña:</label><br>
@@ -31,4 +32,4 @@
   <a href="{$BASE_URL}?action=reservas&sub_action=listar">Cancelar</a>
 </form>
 
-{include file="footer.tpl"}
+{include file="footer.html"}

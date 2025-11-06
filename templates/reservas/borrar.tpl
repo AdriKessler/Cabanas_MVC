@@ -1,18 +1,20 @@
-{include file="header.tpl"}
+{include file="header.html"}
 
 <h2>Eliminar Reserva</h2>
 
 <p>
   ¿Estás segura de que querés eliminar la reserva de 
-  <strong>{$reserva.persona}</strong> 
-  en la cabaña <strong>{$reserva.cabana}</strong>
-  del {$reserva.entrada} al {$reserva.salida}?
+  <strong>{$reserva.persona_nombre|default:$reserva.persona|default:$reserva.persona_id}</strong> 
+  en la cabaña <strong>{$reserva.cabana_nombre|default:$reserva.cabana|default:$reserva.cabana_id}</strong>
+  del {$reserva.fecha_inicio} al {$reserva.fecha_fin}?
 </p>
 
-<form method="post" action="{$BASE_URL}?action=reservas&sub_action=borrar&id={$reserva.id}">
+<form id="frm-del" action="{$BASE_URL}reservas?sub_action=borrar&id={$reserva.id}">
+  <input type="hidden" name="id" value="{$reserva.id}">
   <input type="hidden" name="csrf" value="{$csrf}">
-  <button type="submit">Sí, eliminar</button>
-  <a href="{$BASE_URL}?action=reservas&sub_action=listar">Cancelar</a>
 </form>
 
-{include file="footer.tpl"}
+<button form="frm-del" type="submit" formmethod="post">Sí, eliminar</button>
+<a href="{$BASE_URL}reservas?sub_action=listar">Cancelar</a>
+
+{include file="footer.html"}

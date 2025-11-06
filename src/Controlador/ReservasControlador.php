@@ -76,10 +76,6 @@ class ReservasControlador {
             return;
         }
 
-        // 1) Pedir datos desde la vista
-        $datos = $this->vista->agregar();
-        if ($datos === null) { return; }  // ← importantísimo
-
         // 2) Inicializar variables por defecto
         $idPersona = 0;
         $idCabana  = 0;
@@ -185,7 +181,6 @@ class ReservasControlador {
     }
 
     public function modificar() {
-         $datos = $this->vista->modificar();
         $id = 0;
             if (isset($_GET['id'])) {
                 $id = (int) $_GET['id'];
@@ -305,87 +300,69 @@ class ReservasControlador {
             $this->vista->mostrarFormularioModificar($reserva, $personas, $cabanas);
         }
 
-    public function borrar() {
-        // GET: mostrar confirmación usando la vista
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $id = 0;
-            if (isset($_GET['id'])) {
-                $id = (int) $_GET['id'];
-            }
+    public function borrar(): void {
+        // --- DEBUG opcional mientras probás ---
+        // var_dump($_SERVER['REQUEST_METHOD'], $_POST, $_GET, $_SERVER['REQUEST_URI']); exit;
 
-            if ($id <= 0) {
-                $_SESSION['flash'] = 'ID inválido.';
-                header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
-                exit;
-            }
-
-            $reserva = $this->modelo->findById($id);
-            if (!$reserva) {
-                $_SESSION['flash'] = 'La reserva no existe.';
-                header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
-                exit;
-            }
-
-            if (empty($_SESSION['csrf'])) {
-                $_SESSION['csrf'] = bin2hex(random_bytes(16));
-            }
-
-            // Si tu vista espera la reserva y el token, pasalos por parámetro.
-            // Si tu vista no recibe parámetros y solo renderiza, dejá solo: $this->vista->borrar();
-            $this->vista->borrar($reserva, $_SESSION['csrf']);
-            return;
-        }
-
-        // POST: leer datos desde la vista y eliminar
-        $datos = $this->vista->borrar();
-
+        // 1) Detectar ID (GET o /reservas/borrar/123)
         $id = 0;
-        if (is_array($datos) && array_key_exists('id', $datos)) {
-            $id = (int) $datos['id'];
+        if (isset($_GET['id'])) {
+            $id = (int) $_GET['id'];
+        } else {
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '';
+            if (preg_match('#/reservas/borrar/(\d+)#', $path, $m)) {
+                $id = (int) $m[1];
+            }
         }
 
         if ($id <= 0) {
-            $_SESSION['flash'] = 'ID inválido.';
+            $this->vista->mensajeError('ID de reserva inválido.');
             header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
             exit;
         }
 
-        $csrfOk = false;
-        if (is_array($datos) && array_key_exists('csrf', $datos)) {
-            if (isset($_SESSION['csrf'])) {
-                if ($datos['csrf'] === $_SESSION['csrf']) {
-                    $csrfOk = true;
-                }
+        // 2) SI ES GET → MOSTRAR CONFIRMACIÓN (NO REDIRIGIR)
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $reserva = $this->modelo->findById($id);  // <- tu función
+            if (!$reserva) {
+                $this->vista->mensajeError('La reserva no existe.');
+                header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
+                exit;
             }
+
+            if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+            if (empty($_SESSION['csrf'])) { $_SESSION['csrf'] = bin2hex(random_bytes(16)); }
+
+            // Mostramos la PÁGINA con el botón "Sí, eliminar"
+            $this->vista->mostrarConfirmarBorrado($reserva, $_SESSION['csrf']);
+            return;
         }
 
-        if (!$csrfOk) {
-            $_SESSION['flash'] = 'Token inválido.';
+        // 3) SI ES POST → VALIDAR Y BORRAR
+        if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+        $csrf = $_POST['csrf'] ?? '';
+        if (!$csrf || !isset($_SESSION['csrf']) || !hash_equals($_SESSION['csrf'], $csrf)) {
+            $this->vista->mensajeError('Token CSRF inválido.');
             header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
             exit;
         }
+
+        // Id definitivo desde POST (cinturón y tiradores)
+        $postId = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+        if ($postId > 0) { $id = $postId; }
 
         try {
-            $ok = $this->modelo->deleteById($id);
-            if ($ok) {
-                $_SESSION['flash'] = 'Reserva eliminada.';
-            } else {
-                $_SESSION['flash'] = 'La reserva no existe o ya fue eliminada.';
+            if ($this->modelo->delete($id)) {
+                header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
+                exit;
             }
-        } catch (PDOException $e) {
-            if (isset($e->errorInfo[1])) {
-                if ($e->errorInfo[1] === 1451) {
-                    $_SESSION['flash'] = 'No se puede eliminar: tiene datos relacionados.';
-                    header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
-                    exit;
-                }
-            }
-            $_SESSION['flash'] = 'Error al eliminar.';
+            $this->vista->mensajeError('No se pudo borrar la reserva.');
+            header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
+            exit;
         } catch (Throwable $e) {
-            $_SESSION['flash'] = 'Error al eliminar.';
+            $this->vista->mensajeError('Error al intentar borrar la reserva: ' . $e->getMessage());
+            header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
+            exit;
         }
-
-       header('Location: ' . BASE_URL . 'reservas?sub_action=listar');
-        exit;
     }
 }

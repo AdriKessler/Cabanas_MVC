@@ -151,40 +151,16 @@ class ReservasVista extends Vista {
         $this->smarty->display('reservas/editar.tpl');
     }
 
-    public function mostrarFormularioBorrar($reserva) {
-        if (!isset($_SESSION['csrf'])) {
-            $_SESSION['csrf'] = bin2hex(random_bytes(16));
-        }
+    public function mostrarConfirmarBorrado(array $reserva, string $csrf): void {
+        $smarty = new \Smarty\Smarty();
+        $smarty->setTemplateDir(SERVER_PATH . '/templates/');
+        $smarty->setCompileDir(SERVER_PATH . '/templates_c/');
 
-        $id = null;
+        $smarty->assign('BASE_URL', BASE_URL);
+        $smarty->assign('reserva', $reserva);
+        $smarty->assign('csrf', $csrf);
 
-        if (is_array($reserva)) {
-            if (array_key_exists('id', $reserva)) {
-                $id = (int)$reserva['id'];
-            } elseif (array_key_exists('id_reserva', $reserva)) {
-                $id = (int)$reserva['id_reserva'];
-            }
-        } elseif (is_object($reserva)) {
-            if (method_exists($reserva, 'getId')) {
-                $id = (int)$reserva->getId();
-            } elseif (method_exists($reserva, 'getIdReserva')) {
-                $id = (int)$reserva->getIdReserva();
-            } elseif (property_exists($reserva, 'id')) {
-                $id = (int)$reserva->id;
-            }
-        }
-
-        $this->smarty->assign('reserva', $reserva);
-        $this->smarty->assign('csrf', $_SESSION['csrf']);
-
-        // Acción limpia, sin querystring
-        if ($id !== null) {
-            $this->smarty->assign('action_url', BASE_URL . '?action=reservas&sub_action=borrar&id=' . $id);
-        } else {
-            $this->smarty->assign('action_url', BASE_URL . '?action=reservas&sub_action=borrar');
-        }
-
-        $this->smarty->display('reservas/borrar.tpl');
+        $smarty->display('reservas/borrar.tpl');
     }
 
     /* ---------------- Opción no reconocida (mantengo firma) ---------------- */

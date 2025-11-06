@@ -134,17 +134,21 @@ class DB {
         // Buscar una reserva por su ID
     public function buscarReservaPorId(int $id) {
         $st = Conexion::pdo()->prepare(
-            'SELECT id, persona_id, cabana_id, fecha_inicio, fecha_fin
-            FROM reservas
-            WHERE id = :id'
+            'SELECT r.id,
+                    r.persona_id,
+                    r.cabana_id,
+                    r.fecha_inicio,
+                    r.fecha_fin,
+                    p.nombre AS persona_nombre,
+                    c.nombre AS cabana_nombre
+            FROM reservas r
+            JOIN personas p ON p.id = r.persona_id
+            JOIN cabanas  c ON c.id = r.cabana_id
+            WHERE r.id = :id'
         );
         $st->execute([':id' => $id]);
         $fila = $st->fetch(PDO::FETCH_ASSOC);
-        if ($fila) {
-            return $fila;
-        } else {
-            return false;
-        }
+        return $fila ?: false;
     }
 
     // Actualizar una reserva existente
@@ -188,5 +192,30 @@ class DB {
         );
         $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function haySolapamientoReserva(int $cabanaId, string $entrada, string $salida, int $excluirId = 0): bool {
+        $sql = "SELECT 1
+                FROM reservas
+                WHERE cabana_id = :cabana_id
+                AND NOT (fecha_fin < :entrada OR fecha_inicio > :salida)";
+
+        if ($excluirId > 0) {
+            $sql .= " AND id <> :excluirId";
+        }
+        $sql .= " LIMIT 1";
+
+        $st = Conexion::pdo()->prepare($sql);
+        $params = [
+            ':cabana_id' => $cabanaId,
+            ':entrada'   => $entrada,
+            ':salida'    => $salida,
+        ];
+        if ($excluirId > 0) {
+            $params[':excluirId'] = $excluirId;
+        }
+
+        $st->execute($params);
+        return (bool) $st->fetchColumn(); // true si hay al menos una superpuesta
     }
 }
