@@ -2,7 +2,7 @@
 
 <h2>Nueva reserva</h2>
 
-<form method="post" action="{$BASE_URL}?action=reservas&sub_action=agregar">
+<form method="post" action="{$smarty.const.BASE_URL}?action=reservas&sub_action=agregar">
   
   <label>Persona:</label>
   <select name="persona_id" required style="min-width:220px">
@@ -27,7 +27,7 @@
   <input type="date" name="fecha_fin" required>
 
   <button type="submit">Guardar</button>
-  <a href="{$BASE_URL}?action=reservas&sub_action=listar">Cancelar</a>
+  <a href="{$smarty.const.BASE_URL}?action=reservas&sub_action=listar">Cancelar</a>
 </form>
 
 {include file="footer.html"}

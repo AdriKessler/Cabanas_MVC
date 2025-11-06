@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2025-11-06 14:14:45
+/* Smarty version 5.4.2, created on 2025-11-06 21:26:27
   from 'file:reservas/agregar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_690c9f4562f908_67768557',
+  'unifunc' => 'content_690d047333c633_88957014',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9162ca3eb9e20bb6de1958f9d8975de5d2d24d52' => 
     array (
       0 => 'reservas/agregar.tpl',
-      1 => 1762434869,
+      1 => 1762460776,
       2 => 'file',
     ),
   ),
@@ -22,14 +22,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:footer.html' => 1,
   ),
 ))) {
-function content_690c9f4562f908_67768557 (\Smarty\Template $_smarty_tpl) {
+function content_690d047333c633_88957014 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\cabanas_MVC\\templates\\reservas';
 $_smarty_tpl->renderSubTemplate("file:header.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
 
 <h2>Nueva reserva</h2>
 
-<form method="post" action="<?php echo $_smarty_tpl->getValue('BASE_URL');?>
+<form method="post" action="<?php echo (defined('BASE_URL') ? constant('BASE_URL') : null);?>
 ?action=reservas&sub_action=agregar">
   
   <label>Persona:</label>
@@ -73,7 +73,7 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
   <input type="date" name="fecha_fin" required>
 
   <button type="submit">Guardar</button>
-  <a href="<?php echo $_smarty_tpl->getValue('BASE_URL');?>
+  <a href="<?php echo (defined('BASE_URL') ? constant('BASE_URL') : null);?>
 ?action=reservas&sub_action=listar">Cancelar</a>
 </form>
 

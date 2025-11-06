@@ -151,16 +151,14 @@ class ReservasVista extends Vista {
         $this->smarty->display('reservas/editar.tpl');
     }
 
-    public function mostrarConfirmarBorrado(array $reserva, string $csrf): void {
-        $smarty = new \Smarty\Smarty();
-        $smarty->setTemplateDir(SERVER_PATH . '/templates/');
-        $smarty->setCompileDir(SERVER_PATH . '/templates_c/');
+    public function mostrarFormularioBorrar($reserva) {
+        if (empty($_SESSION['csrf'])) {
+            $_SESSION['csrf'] = bin2hex(random_bytes(16));
+        }
 
-        $smarty->assign('BASE_URL', BASE_URL);
-        $smarty->assign('reserva', $reserva);
-        $smarty->assign('csrf', $csrf);
-
-        $smarty->display('reservas/borrar.tpl');
+        $this->smarty->assign('reserva', $reserva);
+        $this->smarty->assign('csrf', $_SESSION['csrf']);
+        $this->smarty->display('reservas/borrar.tpl');
     }
 
     /* ---------------- Opción no reconocida (mantengo firma) ---------------- */

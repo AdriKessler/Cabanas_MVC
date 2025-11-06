@@ -9,12 +9,11 @@
   del {$reserva.fecha_inicio} al {$reserva.fecha_fin}?
 </p>
 
-<form id="frm-del" action="{$BASE_URL}reservas?sub_action=borrar&id={$reserva.id}">
-  <input type="hidden" name="id" value="{$reserva.id}">
+<form method="post" action="{$smarty.const.BASE_URL}?action=reservas&sub_action=borrar">
   <input type="hidden" name="csrf" value="{$csrf}">
+  <input type="hidden" name="id"   value="{$reserva.id}">
+  <button type="submit" class="btn btn-sm btn-danger">Sí, eliminar</button>
+  <a href="{$smarty.const.BASE_URL}?action=reservas&sub_action=listar">Cancelar</a>
 </form>
-
-<button form="frm-del" type="submit" formmethod="post">Sí, eliminar</button>
-<a href="{$BASE_URL}reservas?sub_action=listar">Cancelar</a>
 
 {include file="footer.html"}

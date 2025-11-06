@@ -43,7 +43,7 @@ class ReservasModelo {
     /**
      * Elimina una reserva por ID.
      */
-    public function deleteById(int $id): bool {
+    public function delete(int $id): bool {
         return $this->db->borrarReservaPorId($id);
     }
 

@@ -131,8 +131,6 @@ class CabanasControlador {
     }
     
     public function borrar(): void {
-        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
-
         // --- Caso GET: mostrar confirmar borrado ---
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;

@@ -11,4 +11,12 @@
     | <a href="{$base_url}?action=usuarios&sub_action=registro">Registro</a>
   {/if}
 </nav>
+
 <hr>
+
+{* --- Mensajes flash (éxito / error) --- *}
+{if isset($flash) && $flash ne ''}
+  <div>
+    {$flash}
+  </div>
+{/if}
