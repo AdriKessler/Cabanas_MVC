@@ -1,9 +1,13 @@
-  </main>
-    <footer>
-        <p>© {$anio} Sistema de Gestión de Cabañas. Todos los derechos reservados.</p>
-    </footer>
+    </main>
 
-    <!-- Enlace al script -->
+  <footer class="bg-success text-white text-center py-3 mt-4">
+    <small>© {$anio|default:{$smarty.now|date_format:"%Y"}} Sistema de Cabañas</small>
+  </footer>
+
+  <!-- Bootstrap JS (bundle con Popper incluido) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{$base_url}js/script.js?v={$smarty.now}"></script>
 </body>
 </html>
+
+ 

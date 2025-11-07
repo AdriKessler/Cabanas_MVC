@@ -20,7 +20,7 @@ class CabanasModelo {
     /**
      * Crea una nueva cabaña y la agrega a la colección.
      */
-    public function create(string $nombre): int {
+    public function create(string $nombre) {
         // Creamos la cabaña
         $cabaña = new Cabaña($nombre);
 

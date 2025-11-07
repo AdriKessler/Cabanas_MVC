@@ -130,7 +130,7 @@ class CabanasControlador {
         $this->vista->mostrarFormularioModificar($cabana);
     }
     
-    public function borrar(): void {
+    public function borrar() {
         // --- Caso GET: mostrar confirmar borrado ---
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;

@@ -17,7 +17,7 @@ class AuthServicio {
         return $_SESSION['user'] ?? null;
     }
 
-    public static function setFlash(string $key, string $msg): void {
+    public static function setFlash(string $key, string $msg) {
         $_SESSION['flash'][$key] = $msg;
     }
 
@@ -34,7 +34,7 @@ class AuthServicio {
         return $_SESSION['csrf'];
     }
 
-    public static function verificarCsrf(string $token): void {
+    public static function verificarCsrf(string $token) {
         if (empty($_SESSION['csrf']) || !hash_equals($_SESSION['csrf'], $token)) {
             http_response_code(400);
             exit('CSRF inválido');

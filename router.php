@@ -1,9 +1,5 @@
 <?php
-// ---- INICIO DE CÓDIGO DE DIAGNÓSTICO ----
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-// ---- FIN DE CÓDIGO DE DIAGNÓSTICO ----
+
 // 1. INICIAR LA SESIÓN - Debe ser LO PRIMERO
 session_start(); // imprescindible para login
 

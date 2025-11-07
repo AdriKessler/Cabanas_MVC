@@ -1,41 +1,59 @@
-.menu-dd { 
-    position: relative; 
-    display: inline-block; 
-}
+/* --- Dropdown (lo dejo igual) --- */
+.menu-dd { position: relative; display: inline-block; }
 .menu-dd__toggle {
   padding: .6rem .9rem; border: 1px solid #ddd; border-radius: .6rem;
   background: #fff; cursor: pointer; font: inherit;
 }
-.menu-dd__toggle:focus { 
-    outline: 2px solid #6aa0ff; 
-    outline-offset: 2px; 
+.menu-dd__toggle:focus { outline: 2px solid #6aa0ff; outline-offset: 2px; }
+.menu-dd__panel {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 1000;
+  min-width: 220px; padding: .35rem; border: 1px solid #e6e6e6;
+  border-radius: .6rem; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.menu-dd__item { padding: .55rem .7rem; border-radius: .5rem; text-decoration: none; color: #222; }
+.menu-dd__item:hover, .menu-dd__item:focus { background: #f3f3f3; outline: none; }
+[hidden] { display: none !important; }
+
+/* --- Layout para header arriba, footer abajo --- */
+html { height: 100%; }
+
+body {
+  min-height: 100vh;               /* ocupa todo el alto visible */
+  margin: 0;
+  display: flex;                    /* columna: header - main - footer */
+  flex-direction: column;
+
+  /* Fondo global */
+  background-image: url("/cabanas_MVC/img/cabanas.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
-.menu-dd__panel {
-  position: absolute; 
-  top: calc(100% + 6px); 
-  left: 0; 
-  z-index: 1000;
-  min-width: 220px; 
-  padding: .35rem; 
-  border: 1px solid #e6e6e6;
-  border-radius: .6rem; 
-  background: #fff; 
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
-  display: flex; 
-  flex-direction: column; 
-  gap: 4px;
+/* Contenido ocupa el espacio intermedio */
+main.container {
+  flex: 1;                          /* empuja el footer hacia abajo */
+  background-color: rgba(255, 255, 255, 0.88);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
-.menu-dd__item {
-  padding: .55rem .7rem; 
-  border-radius: .5rem; 
-  text-decoration: none; 
-  color: #222;
+
+/* Navbar sólida (SIN margin-top:auto) */
+nav.navbar {
+  background-color: #198754;
+  color: white;
 }
-.menu-dd__item:hover, .menu-dd__item:focus { 
-    background: #f3f3f3; 
-    outline: none; 
+
+/* Footer pegado abajo */
+footer {
+  margin-top: auto;                 /* se pega al final de la columna */
+  background-color: #198754;
+  color: white;
+  text-align: center;
+  padding: 1rem;
 }
-[hidden] { 
-  display: none !important; 
-}   /* por si algún reset lo pisa */

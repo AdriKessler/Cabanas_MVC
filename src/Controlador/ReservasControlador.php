@@ -301,7 +301,7 @@ class ReservasControlador {
             $this->vista->mostrarFormularioModificar($reserva, $personas, $cabanas);
         }
 
-    public function borrar(): void {
+    public function borrar() {
     // --- Caso GET: mostrar confirmar borrado ---
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $id = 0;
